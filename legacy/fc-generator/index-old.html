@@ -1,0 +1,2054 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fetish Chateau — Instagram Engine</title>
+
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500&family=Montserrat:wght@500;600&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- html2canvas for screenshots -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+        <style>
+            /* === RESET & BASE === */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            #bgGalleryContainer{
+                max-height: calc(100vh - 600px);
+                    overflow: scroll;
+                    overflow-x: auto;
+                    padding: 10px;
+            }
+
+            body {
+                font-family:
+                    "Inter",
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    sans-serif;
+                background: #0a0a0a;
+                color: #ffffff;
+                min-height: 100vh;
+            }
+
+            /* === LAYOUT === */
+            .app {
+                display: grid;
+                grid-template-columns: 320px 1fr 340px;
+                min-height: 100vh;
+            }
+
+            /* === CONTROLS PANEL (LEFT) === */
+            .controls {
+                background: #111;
+                border-right: 1px solid #222;
+                padding: 24px;
+                overflow-y: auto;
+                max-height: 100vh;
+            }
+
+            /* === CONTROLS PANEL (RIGHT) === */
+            .controls-right {
+                background: #111;
+                border-left: 1px solid #222;
+                padding: 24px;
+                overflow-y: auto;
+                max-height: 100vh;
+            }
+
+            .logo {
+                font-family: "Bebas Neue", sans-serif;
+                font-size: 28px;
+                letter-spacing: 0.1em;
+                margin-bottom: 8px;
+                color: #fff;
+            }
+
+            .tagline {
+                font-size: 11px;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: #666;
+                margin-bottom: 32px;
+            }
+
+            /* === FORM SECTIONS === */
+            .section {
+                margin-bottom: 28px;
+            }
+
+            .section-title {
+                font-family: "Montserrat", sans-serif;
+                font-size: 10px;
+                font-weight: 600;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: #666;
+                margin-bottom: 12px;
+            }
+
+            /* === TOGGLE BUTTONS === */
+            .toggle-group {
+                display: flex;
+                gap: 8px;
+            }
+
+            .toggle-btn {
+                flex: 1;
+                padding: 12px 16px;
+                background: #1a1a1a;
+                border: 1px solid #333;
+                color: #888;
+                font-family: "Montserrat", sans-serif;
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.05em;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            .toggle-btn:hover {
+                border-color: #444;
+                color: #aaa;
+            }
+
+            .toggle-btn.active {
+                background: #222;
+                border-color: #dc143c;
+                color: #fff;
+            }
+
+            /* === COLOR SELECTOR === */
+            .color-options {
+                display: flex;
+                gap: 10px;
+            }
+
+            .color-btn {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                border: 3px solid transparent;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                position: relative;
+            }
+
+            .color-btn:hover {
+                transform: scale(1.1);
+            }
+
+            .color-btn.active {
+                border-color: #fff;
+                // box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            }
+
+            .color-btn.crimson {
+                background: linear-gradient(135deg, #8b0000, #dc143c);
+            }
+            .color-btn.magenta {
+                background: linear-gradient(135deg, #99004d, #ff0080);
+            }
+            .color-btn.blue {
+                background: linear-gradient(135deg, #003399, #0066ff);
+            }
+            .color-btn.gold {
+                background: linear-gradient(135deg, #997a00, #ffd700);
+            }
+            .color-btn.mono {
+                background: linear-gradient(135deg, #333, #666);
+            }
+
+            /* === IMAGE GALLERY === */
+            /* === BACKGROUND SUBCATEGORIES === */
+            .bg-subcategories {
+                display: flex;
+                gap: 4px;
+                margin-bottom: 12px;
+            }
+
+            .bg-subcategory-btn {
+                flex: 1;
+                padding: 8px 10px;
+                background: #1a1a1a;
+                border: 1px solid #333;
+                color: #666;
+                font-family: "Montserrat", sans-serif;
+                font-size: 10px;
+                font-weight: 500;
+                letter-spacing: 0.03em;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                text-transform: uppercase;
+            }
+
+            .bg-subcategory-btn:hover {
+                border-color: #444;
+                color: #888;
+            }
+
+            .bg-subcategory-btn.active {
+                background: #222;
+                border-color: #dc143c;
+                color: #fff;
+            }
+
+            .bg-category-content {
+                display: none;
+            }
+
+            .bg-category-content.active {
+                display: block;
+            }
+
+            .image-gallery {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .image-thumb {
+                aspect-ratio: 9/16;
+                background-size: cover;
+                background-position: center;
+                border: 2px solid transparent;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border-radius: 4px;
+            }
+
+            .image-thumb:hover {
+                border-color: #444;
+                transform: scale(1.02);
+            }
+
+            .image-thumb.active {
+                border-color: #dc143c;
+                // box-shadow: 0 0 15px rgba(220, 20, 60, 0.4);
+            }
+
+            .upload-btn {
+                aspect-ratio: 9/16;
+                background: #1a1a1a;
+                border: 2px dashed #333;
+                border-radius: 4px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                color: #555;
+                font-size: 11px;
+            }
+
+            .upload-btn:hover {
+                border-color: #555;
+                color: #888;
+            }
+
+            .upload-btn svg {
+                width: 24px;
+                height: 24px;
+                margin-bottom: 6px;
+            }
+
+            #imageUpload {
+                display: none;
+            }
+
+            /* === TEXT INPUTS === */
+            .input-group {
+                margin-bottom: 16px;
+            }
+
+            .input-label {
+                font-size: 11px;
+                font-weight: 500;
+                color: #666;
+                margin-bottom: 6px;
+                display: block;
+            }
+
+            .input-field {
+                width: 100%;
+                padding: 12px 14px;
+                background: #1a1a1a;
+                border: 1px solid #333;
+                border-radius: 4px;
+                color: #fff;
+                font-family: "Inter", sans-serif;
+                font-size: 14px;
+                transition: border-color 0.2s ease;
+            }
+
+            .input-field:focus {
+                outline: none;
+                border-color: #dc143c;
+            }
+
+            .input-field::placeholder {
+                color: #444;
+            }
+
+            textarea.input-field {
+                resize: vertical;
+                min-height: 80px;
+            }
+
+            /* Logo Gallery */
+            .logo-gallery {
+                display: flex;
+                gap: 8px;
+            }
+
+            .logo-thumb {
+                width: 60px;
+                height: 40px;
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-color: #1a1a1a;
+                border: 2px solid transparent;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            .logo-thumb:hover {
+                border-color: #444;
+            }
+
+            .logo-thumb.active {
+                border-color: #dc143c;
+                box-shadow: 0 0 10px rgba(220, 20, 60, 0.4);
+            }
+
+            /* Font Scale Control */
+            .font-scale-control {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .scale-btn {
+                width: 36px;
+                height: 36px;
+                background: #1a1a1a;
+                border: 1px solid #333;
+                color: #fff;
+                font-size: 18px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border-radius: 4px;
+            }
+
+            .scale-btn:hover {
+                background: #222;
+                border-color: #444;
+            }
+
+            .scale-input {
+                width: 70px;
+                text-align: center;
+                -moz-appearance: textfield;
+            }
+
+            .scale-input::-webkit-outer-spin-button,
+            .scale-input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            /* === PRESET BUTTONS === */
+            .preset-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .preset-btn {
+                padding: 8px 12px;
+                background: #1a1a1a;
+                border: 1px solid #333;
+                color: #888;
+                font-family: "Montserrat", sans-serif;
+                font-size: 10px;
+                font-weight: 500;
+                letter-spacing: 0.05em;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border-radius: 4px;
+            }
+
+            .preset-btn:hover {
+                border-color: #555;
+                color: #fff;
+            }
+
+            /* === DOWNLOAD BUTTON === */
+            .download-btn {
+                width: 100%;
+                padding: 16px 24px;
+                background: linear-gradient(135deg, #8b0000, #dc143c);
+                border: none;
+                color: #fff;
+                font-family: "Montserrat", sans-serif;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                margin-top: 24px;
+            }
+
+            .download-btn:hover {
+                transform: translateY(-2px);
+            }
+
+            .download-btn:active {
+                transform: translateY(0);
+            }
+
+            .download-btn.loading {
+                opacity: 0.7;
+                cursor: wait;
+            }
+
+            /* === PREVIEW AREA === */
+            .preview-area {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+                background: #0a0a0a;
+                overflow: auto;
+            }
+
+            .preview-container {
+                position: relative;
+                outline: 2px solid #333333;
+            }
+
+            .preview-label {
+                font-size: 11px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: #444;
+                margin-bottom: 16px;
+            }
+
+            /* === POSTER STYLES === */
+            .poster {
+                position: relative;
+                overflow: hidden;
+                background: #0a0a0a;
+            }
+
+            .poster.story {
+                width: 1080px;
+                height: 1920px;
+            }
+
+            .poster.feed {
+                width: 1080px;
+                height: 1080px;
+            }
+
+            /* Scaling for preview */
+            .preview-container .poster.story {
+                transform: scale(0.35);
+                transform-origin: top left;
+            }
+
+            .preview-container .poster.feed {
+                transform: scale(0.5);
+                transform-origin: top left;
+            }
+
+            .preview-container.story-size {
+                width: 378px;
+                height: 672px;
+            }
+
+            .preview-container.feed-size {
+                width: 540px;
+                height: 540px;
+            }
+
+            /* Background */
+            .poster-bg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-size: cover;
+                background-position: center;
+            }
+
+            /* Ambient Glow */
+            .ambient-glow {
+                position: absolute;
+                width: 400px;
+                height: 100%;
+                pointer-events: none;
+            }
+
+            .ambient-glow.left {
+                top: 0;
+                left: 0;
+            }
+
+            .ambient-glow.right {
+                top: 0;
+                right: 0;
+            }
+
+            .ambient-glow.center {
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+            }
+
+            /* Glass Panel - Container */
+            .glass-panel {
+                position: absolute;
+            }
+
+            .glass-panel.left {
+                top: 0;
+                left: 0;
+                width: 75%;
+                height: 100%;
+            }
+
+            .glass-panel.right {
+                top: 0;
+                right: 0;
+                width: 75%;
+                height: 100%;
+            }
+
+            .glass-panel.center {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 85%;
+                min-height: 60%;
+            }
+
+            .glass-panel.split{
+                width: 100%;
+                min-height: 50%;
+                bottom: 0;
+            }
+
+            .poster.feed .glass-panel.center {
+                width: 88%;
+                min-height: 70%;
+            }
+
+            /* Glass Panel - Background Layer (transparency + blur) */
+            .glass-panel-bg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                backdrop-filter: blur(var(--blur-amount, 8px));
+                -webkit-backdrop-filter: blur(var(--blur-amount, 8px));
+            }
+
+            .glass-panel.left .glass-panel-bg {
+                border-right: var(--panel-border-width, 2px) solid var(--accent-30);
+            }
+
+            .glass-panel.right .glass-panel-bg {
+                border-left: var(--panel-border-width, 2px) solid var(--accent-30);
+            }
+
+            .glass-panel.center .glass-panel-bg, .glass-panel.split .glass-panel-bg {
+                border: var(--panel-border-width, 2px) solid var(--accent-25);
+            }
+
+            /* Glass Panel - Content Layer (opaque text) */
+            .glass-panel-content {
+                position: relative;
+                z-index: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100%;
+
+                position: absolute;
+                width: -webkit-fill-available;
+            }
+
+            .glass-panel.left .glass-panel-content,
+            .glass-panel.right .glass-panel-content {
+                padding: 80px 70px;
+            }
+
+            .glass-panel.center .glass-panel-content, .glass-panel.split .glass-panel-content {
+                padding: 80px 70px;
+                text-align: center;
+                align-items: center;
+            }
+
+            .poster.feed .glass-panel.center .glass-panel-content, .poster.feed .glass-panel.split .glass-panel-content {
+                padding: 60px 50px;
+            }
+
+            .accent-line.split{
+                display: none;
+            }
+
+            /* None layout - hide glass panel */
+            .glass-panel.none {
+                display: none;
+            }
+
+            /* Accent Line */
+            .accent-line {
+                position: absolute;
+                width: 3px;
+                height: calc(100% - 160px);
+                top: 80px;
+                background: linear-gradient(
+                    180deg,
+                    transparent 0%,
+                    var(--accent-30) 20%,
+                    var(--accent-50) 50%,
+                    var(--accent-30) 80%,
+                    transparent 100%
+                );
+            }
+
+            .accent-line.left {
+                left: 50px;
+            }
+            .accent-line.right {
+                right: 50px;
+            }
+
+            .glass-panel-content > * {
+                text-shadow: 0px 0px 128px var(--accent-color);
+                word-break: break-word;
+            }
+
+            /* Typography */
+            .poster-logo {
+                /* height: calc(120px + var(--font-scale, 0) * 4px); */
+                height: 200px;
+                margin-bottom: 20px;
+            }
+
+            .poster-logo img {
+                height: 100%;
+                width: auto;
+                object-fit: contain;
+            }
+
+            .poster-header {
+                font-family: var(--font-header, "Bebas Neue", sans-serif);
+                font-weight: 400;
+                font-size: calc(160px + var(--font-scale, 0) * 3px);
+                line-height: 0.92;
+                text-transform: uppercase;
+                color: #ffffff;
+                margin-bottom: 20px;
+            }
+
+            .poster.feed .poster-header {
+                font-size: calc(120px + var(--font-scale, 0) * 2px);
+                margin-bottom: 10px;
+            }
+
+            .poster.feed .poster-logo{
+                height: 160px;
+            }
+
+            .poster-divider {
+                width: 80px;
+                height: 3px;
+                /* background: linear-gradient(
+                    90deg,
+                    var(--accent-color),
+                    var(--accent-30),
+                    transparent
+                ); */
+                margin-bottom: 40px;
+            }
+
+            .glass-panel.center .poster-divider {
+                /* background: linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--accent-color),
+                    transparent
+                ); */
+                width: 120px;
+            }
+
+            .poster-body {
+                font-family: var(--font-body, "Inter", sans-serif);
+                font-weight: 400;
+                font-size: calc(42px + var(--font-scale, 0) * 1px);
+                line-height: 1.7;
+                color: rgba(255, 255, 255, 0.85);
+                margin-bottom: 70px;
+                max-width: 95%;
+            }
+
+            .poster.feed .poster-body {
+                font-size: calc(33px + var(--font-scale, 0) * 1px);
+                margin-bottom: 60px;
+            }
+
+            .poster-body .highlight {
+                color: var(--accent-color);
+                font-weight: 500;
+            }
+
+            .poster-date {
+                font-family: var(--font-misc, "Montserrat", sans-serif);
+                font-weight: 600;
+                font-size: calc(32px + var(--font-scale, 0) * 1px);
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.9);
+                margin-bottom: 16px;
+            }
+
+            .poster.feed .poster-date {
+                font-size: calc(22px + var(--font-scale, 0) * 1px);
+            }
+
+            .footer-divider {
+                width: 100%;
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.2),
+                    rgba(255, 255, 255, 0.05)
+                );
+                margin-bottom: 30px;
+            }
+
+            .glass-panel.center .footer-divider {
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.2),
+                    transparent
+                );
+                width: 80%;
+            }
+
+            .poster.feed .glass-panel.split{
+                min-height: 100%;
+            }
+
+            .poster-cta {
+                font-family: var(--font-misc, "Montserrat", sans-serif);
+                font-weight: 600;
+                font-size: calc(38px + var(--font-scale, 0) * 1px);
+                letter-spacing: 0.25em;
+                text-transform: uppercase;
+                color: var(--accent-color);
+            }
+
+            .poster.feed .poster-cta {
+                font-size: calc(26px + var(--font-scale, 0) * 1px);
+            }
+
+            /* Hidden full-size poster for export */
+            #exportPoster {
+                position: fixed;
+                left: -9999px;
+                top: 0;
+            }
+
+            /* === RESPONSIVE === */
+            @media (max-width: 1400px) {
+                .app {
+                    grid-template-columns: 300px 1fr 300px;
+                }
+            }
+
+            @media (max-width: 1200px) {
+                .app {
+                    grid-template-columns: 1fr;
+                }
+
+                .controls {
+                    max-height: none;
+                    border-right: none;
+                    border-bottom: 1px solid #222;
+                }
+
+                .controls-right {
+                    max-height: none;
+                    border-left: none;
+                    border-top: 1px solid #222;
+                }
+
+                .preview-area {
+                    min-height: 80vh;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="app">
+            <!-- CONTROLS PANEL -->
+            <div class="controls">
+                <div class="logo">FETISH CHATEAU</div>
+                <div class="tagline">Generator Postow Instagram</div>
+
+                <!-- FORMAT -->
+                <div class="section">
+                    <div class="section-title">Format</div>
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" data-format="story">
+                            Story (9:16)
+                        </button>
+                        <button class="toggle-btn" data-format="feed">
+                            Feed (1:1)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- LAYOUT -->
+                <div class="section">
+                    <div class="section-title">Uklad</div>
+                    <button
+                        class="toggle-btn"
+                        data-layout="none"
+                        style="
+                            float: right;
+                            position: relative;
+                            top: 0;
+                            top: -32px;
+                            right: 0;
+                            /* scale: 0.7; */
+                            background: transparent;
+                            padding: 4px 8px;
+                        "
+                    >
+                        Brak
+                    </button>
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" data-layout="left">
+                            LF
+                        </button>
+                        <button class="toggle-btn" data-layout="right">
+                            RT
+                        </button>
+                        <button class="toggle-btn" data-layout="center">
+                            Mid
+                        </button>
+                        <button class="toggle-btn" data-layout="split">
+                            Split
+                        </button>
+                    </div>
+                </div>
+
+                <!-- COLOR -->
+                <div class="section">
+                    <div class="section-title">Kolor Akcentu</div>
+                    <div class="color-options">
+                        <button
+                            class="color-btn crimson active"
+                            data-color="crimson"
+                            title="Karmazyn"
+                        ></button>
+                        <button
+                            class="color-btn magenta"
+                            data-color="magenta"
+                            title="Magenta"
+                        ></button>
+                        <button
+                            class="color-btn blue"
+                            data-color="blue"
+                            title="Niebieski"
+                        ></button>
+                        <button
+                            class="color-btn gold"
+                            data-color="gold"
+                            title="Zloty"
+                        ></button>
+                        <button
+                            class="color-btn mono"
+                            data-color="mono"
+                            title="Mono"
+                        ></button>
+                    </div>
+                </div>
+
+                <!-- BACKGROUND -->
+                <div class="section">
+                    <div class="section-title">Tlo</div>
+
+                    <!-- Subcategory Tabs -->
+                    <div class="bg-subcategories">
+                        <button
+                            class="bg-subcategory-btn active"
+                            data-bg-category="abstract"
+                        >
+                            Abstrakcja
+                        </button>
+                        <button
+                            class="bg-subcategory-btn"
+                            data-bg-category="figure"
+                        >
+                            Postac
+                        </button>
+                        <button
+                            class="bg-subcategory-btn"
+                            data-bg-category="material"
+                        >
+                            Material
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Gallery Container -->
+                    <div id="bgGalleryContainer"></div>
+
+                    <!-- Upload Button -->
+                    <div style="margin-top: 12px">
+                        <label
+                            class="upload-btn"
+                            style="
+                                aspect-ratio: auto;
+                                padding: 12px;
+                                flex-direction: row;
+                                gap: 8px;
+                            "
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                style="width: 20px; height: 20px; margin: 0"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 4v16m8-8H4"
+                                />
+                            </svg>
+                            Wgraj Wlasne
+                            <input
+                                type="file"
+                                id="imageUpload"
+                                accept="image/*"
+                            />
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PREVIEW AREA -->
+            <div class="preview-area">
+                <div class="preview-label">Podglad</div>
+                <div class="preview-container story-size" id="previewContainer">
+                    <div class="poster story" id="previewPoster">
+                        <!-- Content generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="controls-right">
+                <!-- PRESETS -->
+                <div class="section">
+                    <div class="section-title">Szablony</div>
+                    <div class="preset-buttons">
+                        <button class="preset-btn" data-preset="dresscode">
+                            Dress Code
+                        </button>
+                        <button class="preset-btn" data-preset="event">
+                            Wydarzenie
+                        </button>
+                        <button class="preset-btn" data-preset="hiring">
+                            Rekrutacja
+                        </button>
+                        <button class="preset-btn" data-preset="announcement">
+                            Ogloszenie
+                        </button>
+                        <button class="preset-btn" data-preset="clear">
+                            Wyczysc
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TEXT INPUTS -->
+                <div class="section">
+                    <div class="section-title">Tresc</div>
+
+                    <div class="input-group">
+                        <label class="input-label">Logo</label>
+                        <div class="logo-gallery">
+                            <div
+                                class="logo-thumb"
+                                data-logo="none"
+                                style="
+                                    flex: auto;
+                                    display: flex;
+                                    color: #797979;
+                                    align-items: center;
+                                    justify-content: center;
+                                "
+                            >
+                                Brak
+                            </div>
+                            <div
+                                class="logo-thumb"
+                                data-logo="fclogo/1.png"
+                                style="
+                                    background-image: url(&quot;fclogo/1.png&quot;);
+                                "
+                            ></div>
+                            <div
+                                class="logo-thumb"
+                                data-logo="fclogo/2.png"
+                                style="
+                                    background-image: url(&quot;fclogo/2.png&quot;);
+                                "
+                            ></div>
+                            <div
+                                class="logo-thumb active"
+                                data-logo="fclogo/3.png"
+                                style="
+                                    background-image: url(&quot;fclogo/3.png&quot;);
+                                "
+                            ></div>
+                            <div
+                                class="logo-thumb"
+                                data-logo="fclogo/4.png"
+                                style="
+                                    background-image: url(&quot;fclogo/4.png&quot;);
+                                "
+                            ></div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label"
+                            >Naglowek (uzyj | dla nowej linii)</label
+                        >
+                        <input
+                            type="text"
+                            class="input-field"
+                            id="header"
+                            placeholder="TYTUL"
+                            value="Dress|Code"
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label"
+                            >Tekst (uzyj | dla nowej linii)</label
+                        >
+                        <textarea
+                            class="input-field"
+                            id="body"
+                            placeholder="Tresc wiadomosci..."
+                        >
+Obowiązuje strój fetyszowy: latex, skóra, vinyl, bielizna, uprząż. Zakazane: jeansy, t-shirty, odzież codzienna.</textarea
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label"
+                            >Wyroznienie (kolorowe)</label
+                        >
+                        <input
+                            type="text"
+                            class="input-field"
+                            id="highlight"
+                            placeholder="slowo"
+                            value="latex"
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Data / Godzina</label>
+                        <input
+                            type="text"
+                            class="input-field"
+                            id="date"
+                            placeholder="15.01.2025 | 22:00"
+                            value=""
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label"
+                            >CTA (Wezwanie do dzialania)</label
+                        >
+                        <input
+                            type="text"
+                            class="input-field"
+                            id="cta"
+                            placeholder="LINK W BIO"
+                            value="Brak Wyjatkow"
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Skala czcionki</label>
+                        <div class="font-scale-control">
+                            <button class="scale-btn" id="fontScaleDown">
+                                -
+                            </button>
+                            <input
+                                type="number"
+                                class="input-field scale-input"
+                                id="fontScale"
+                                value="0"
+                                min="-50"
+                                max="50"
+                            />
+                            <button class="scale-btn" id="fontScaleUp">
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Czcionka naglowka</label>
+                        <select class="input-field" id="fontHeader"></select>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Czcionka tresci</label>
+                        <select class="input-field" id="fontBody"></select>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Czcionka podpisu</label>
+                        <select class="input-field" id="fontMisc"></select>
+                    </div>
+                </div>
+
+                <!-- BLUR -->
+                <div class="section">
+                    <div class="section-title">Rozmycie</div>
+                    <div class="toggle-group">
+                        <button class="toggle-btn" data-blur="0">-</button>
+                        <button class="toggle-btn" data-blur="16">16</button>
+                        <button class="toggle-btn active" data-blur="32">
+                            32
+                        </button>
+                        <button class="toggle-btn" data-blur="64">64</button>
+                    </div>
+                </div>
+
+                <!-- DOWNLOAD -->
+                <button class="download-btn" id="downloadBtn">
+                    Pobierz Posta
+                </button>
+            </div>
+        </div>
+
+        <!-- Hidden full-size poster for export -->
+        <div id="exportPoster"></div>
+
+        <script>
+            /* === BACKGROUND IMAGES === */
+            const backgroundImages = {
+                abstract: [
+                    "images/abstract/0add8ef1-86d6-47da-a9cd-4328f5f2d9ce.png",
+                    "images/abstract/0b1a281f-f326-4884-bc3d-c6760f85ab3b.png",
+                    "images/abstract/12a891dc-434a-40e7-957a-aa814e29b412.png",
+                    "images/abstract/2e6f255b-0159-4d79-a135-bd24e5d21e21.png",
+                    "images/abstract/2fcd9579-fdc6-43ec-80b2-f0ec24039fd1.png",
+                    "images/abstract/58361d2e-439d-4279-bdd1-1ce89e08d83a.png",
+                    "images/abstract/6ac75c58-be99-4db4-b793-461ce5d6ed98.png",
+                    "images/abstract/71d42ece-e5cc-4641-80de-c4c39787fbcd.png",
+                    "images/abstract/742b61b2-150e-4f3b-95d4-8eb377e049c8.png",
+                    "images/abstract/8caab1e6-ba31-4851-8a53-0ff8985a0538.png",
+                    "images/abstract/91102ceb-b506-4eb8-ade8-4e99a5815171.png",
+                    "images/abstract/916d265e-6740-4346-8545-40535bfcd868.png",
+                    "images/abstract/92fa6495-58b8-463a-91e4-5b02dfd79780.png",
+                    "images/abstract/9e58f243-d6e2-4dbc-93a4-21051b7a128c.png",
+                    "images/abstract/a0f8c6c6-b473-4d39-beab-94a31f796c33.png",
+                    "images/abstract/a3ff2975-9447-4fa7-951b-5960b30c283c.png",
+                    "images/abstract/af282d09-b4b2-4885-8825-8f9f39805d06.png",
+                    "images/abstract/b216d570-a621-475c-ae32-69576161ae4e.png",
+                    "images/abstract/ba44882f-30ab-4584-a220-626dcaddefa8.png",
+                    "images/abstract/bbab8a2e-a57a-44f3-bd88-9cb47d4c9d38.png",
+                    "images/abstract/c6c4330f-8d90-49aa-80a9-aa46f95405e5.png",
+                    "images/abstract/cb25f6a9-630c-4af4-8bfa-69561ec949a2.png",
+                    "images/abstract/cbbf7cba-d57f-499e-8484-c4925db8a0f6.png",
+                    "images/abstract/cf93013a-f09f-4f39-b2b9-915396edbc0c.png",
+                    "images/abstract/da62e6c1-10a1-49eb-8f8e-37ee1c312e50.png",
+                    "images/abstract/f17ebf2f-b773-41c8-ab5e-b73d4f394e09.png",
+                    "images/abstract/f8ba6798-2282-43b2-a878-9081b9035860.png",
+                ],
+                figure: [
+                    "images/figure/08746618-c660-47d1-b737-b808d676247d.png",
+                    "images/figure/255550cc-a5f6-43ab-ab38-32c2c9e08671.png",
+                    "images/figure/2e55f5e4-431e-4f72-bd2a-c24b9b229250.png",
+                    "images/figure/3318e1a2-c28b-47ea-97e7-cd87d5cb2b84.png",
+                    "images/figure/379767b6-51ba-4aa3-b9a4-95ff1176125c.png",
+                    "images/figure/3fe95287-b3e2-4ec3-84a2-5777e3ca7c07.png",
+                    "images/figure/4dee5672-9451-482d-bc7e-942bc2e87ccc.png",
+                    "images/figure/4fb4700a-048e-4205-935f-95b93ce00ce8.png",
+                    "images/figure/66a0d12d-6645-4796-853b-64544e0175fd.png",
+                    "images/figure/6b38ac4e-0366-4847-915c-0e44ed65c8aa.png",
+                    "images/figure/7017aa9d-f757-47da-be98-8d16a6a2ccbb.png",
+                    "images/figure/8350f35a-7ab3-4e88-a053-1033638dd08c.png",
+                    "images/figure/852baa3b-e238-4734-9371-aaba73e13f9b.png",
+                    "images/figure/89b10d38-1c97-45c7-b07c-718bd7cb80f0.png",
+                    "images/figure/a6b54e9c-0adb-40d6-92b7-73cc9d37cd1d.png",
+                    "images/figure/b196a1ef-f42e-4624-aa64-376ceb2b1d40.png",
+                    "images/figure/b3229094-9b3b-4a4c-99f0-79f3131daf5c.png",
+                    "images/figure/b8bd7e23-de48-4a15-9db8-6bd1867bc8b1.png",
+                    "images/figure/cd47ebd8-0a5b-4d05-b6a6-d2db36b6253e.png",
+                    "images/figure/cd8cfa77-ea17-4305-a886-d529a94e8a90.png",
+                    "images/figure/d479e3d3-8af3-49fe-9ff9-9036b0e61434.png",
+                    "images/figure/d780af54-4c70-4591-a25f-37951fbed169.png",
+                    "images/figure/d848105b-a8f9-47ec-8bdb-5331c0d2035e.png",
+                    "images/figure/f20bf92a-365d-4e0b-b65d-511426116c64.png",
+                    "images/figure/f3c98c55-d15b-4f34-88f3-c50b2c4621f9.png",
+                ],
+                material: [
+                    "images/material/0f081d1e-814b-4819-bf8d-b9e513fdceee.png",
+                    "images/material/10e2cdb8-8ada-4728-b6d9-d451d8b9a584.png",
+                    "images/material/2922a210-03ce-423e-80b6-b54bf278469e.png",
+                    "images/material/4f93c356-7269-429a-a89d-76671cf7aa3c.png",
+                    "images/material/546201a6-03a0-4de3-bf1f-5f62298fe7f4.png",
+                    "images/material/6d18c4bb-2811-49a0-b74a-caddf8196cab.png",
+                    "images/material/70abc79e-3d83-4a53-9af3-e4fd21a9ac99.png",
+                    "images/material/74b4dcbc-f4a6-471c-b3cc-14194e377168.png",
+                    "images/material/89d5c1fe-dc53-4e0a-865b-6cd51f1a5870.png",
+                    "images/material/91080d71-0bbb-4054-8fab-4c84f3f79142.png",
+                    "images/material/9f587f7c-fb75-4489-b415-bf50222f23e1.png",
+                    "images/material/9f772bbf-07e2-43f6-a39b-ed86963d3ffe.png",
+                    "images/material/a3230637-4402-4c2a-a7c0-d024687a2736.png",
+                    "images/material/af5acef5-3473-4768-91be-77ebe0813294.png",
+                    "images/material/c11196e4-e228-477b-bcaf-1a6e56bd361b.png",
+                    "images/material/c52732f8-d2f0-4753-b04f-69c231526627.png",
+                    "images/material/d58f26a0-e23a-438a-b078-d906242dab2b.png",
+                    "images/material/d9f07609-b325-43b0-9472-deefbbfc84ac.png",
+                    "images/material/faeb1b15-8d79-4aee-880b-51642079574c.png",
+                ],
+            };
+
+            /* === STATE === */
+            /* === FONT OPTIONS === */
+            const fontOptions = {
+                header: [
+                    { name: "Bebas Neue", value: "'Bebas Neue', sans-serif" },
+                    { name: "Oswald", value: "'Oswald', sans-serif" },
+                    { name: "Anton", value: "'Anton', sans-serif" },
+                    { name: "Teko", value: "'Teko', sans-serif" },
+                    { name: "Russo One", value: "'Russo One', sans-serif" },
+                    {
+                        name: "Black Ops One",
+                        value: "'Black Ops One', cursive",
+                    },
+                    { name: "Staatliches", value: "'Staatliches', cursive" },
+                    {
+                        name: "Permanent Marker",
+                        value: "'Permanent Marker', cursive",
+                    },
+                ],
+                body: [
+                    { name: "Inter", value: "'Inter', sans-serif" },
+                    { name: "Montserrat", value: "'Montserrat', sans-serif" },
+                    { name: "Roboto", value: "'Roboto', sans-serif" },
+                    { name: "Open Sans", value: "'Open Sans', sans-serif" },
+                    { name: "Lato", value: "'Lato', sans-serif" },
+                    { name: "Poppins", value: "'Poppins', sans-serif" },
+                    { name: "Raleway", value: "'Raleway', sans-serif" },
+                    {
+                        name: "Playfair Display",
+                        value: "'Playfair Display', serif",
+                    },
+                ],
+                misc: [
+                    { name: "Bebas Neue", value: "'Bebas Neue', cursive" },
+                    { name: "Inter", value: "'Inter', sans-serif" },
+                    { name: "Montserrat", value: "'Montserrat', sans-serif" },
+                    { name: "Roboto", value: "'Roboto', sans-serif" },
+                    { name: "Open Sans", value: "'Open Sans', sans-serif" },
+                    { name: "Lato", value: "'Lato', sans-serif" },
+                    { name: "Poppins", value: "'Poppins', sans-serif" },
+                    { name: "Raleway", value: "'Raleway', sans-serif" },
+                    {
+                        name: "Playfair Display",
+                        value: "'Playfair Display', serif",
+                    },
+                ],
+            };
+
+            // Track loaded fonts
+            const loadedFonts = new Set(["Bebas Neue", "Inter", "Montserrat"]);
+
+            function loadGoogleFont(fontName) {
+                if (loadedFonts.has(fontName)) return;
+                loadedFonts.add(fontName);
+                const link = document.createElement("link");
+                link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, "+")}:wght@400;500;600;700&display=swap`;
+                link.rel = "stylesheet";
+                document.head.appendChild(link);
+                setTimeout(function () {
+                    updatePreview();
+                }, 500);
+            }
+
+            const state = {
+                format: "story",
+                layout: "left",
+                color: "crimson",
+                blur: 32,
+                fontScale: 0,
+                fontHeader: "'Bebas Neue', sans-serif",
+                fontBody: "'Inter', sans-serif",
+                fontMisc: "'Montserrat', sans-serif",
+                image: backgroundImages.abstract[0],
+                logo: "fclogo/3.png",
+                header: "Dress|Code",
+                body: "Obowiązuje strój fetyszowy: latex, skóra, vinyl, bielizna, uprząż. Zakazane: jeansy, t-shirty, odzież codzienna.",
+                highlight: "latex",
+                date: "",
+                cta: "Brak Wyjatkow",
+            };
+
+            /* === COLOR DEFINITIONS === */
+            const colors = {
+                crimson: {
+                    accent: "#DC143C",
+                    accent15: "rgba(220,20,60,0.15)",
+                    accent25: "rgba(220,20,60,0.25)",
+                    accent30: "rgba(220,20,60,0.30)",
+                    accent40: "rgba(220,20,60,0.40)",
+                    accent50: "rgba(220,20,60,0.50)",
+                    glow: "rgba(220,20,60,0.2)",
+                },
+                magenta: {
+                    accent: "#FF0080",
+                    accent15: "rgba(255,0,128,0.15)",
+                    accent25: "rgba(255,0,128,0.25)",
+                    accent30: "rgba(255,0,128,0.30)",
+                    accent40: "rgba(255,0,128,0.40)",
+                    accent50: "rgba(255,0,128,0.50)",
+                    glow: "rgba(255,0,128,0.2)",
+                },
+                blue: {
+                    accent: "#61e5ff",
+                    accent15: "rgba(0,102,255,0.15)",
+                    accent25: "rgba(0,102,255,0.25)",
+                    accent30: "rgba(0,102,255,0.30)",
+                    accent40: "rgba(0,102,255,0.40)",
+                    accent50: "rgba(0,102,255,0.50)",
+                    glow: "rgba(0,102,255,0.2)",
+                },
+                gold: {
+                    accent: "#FFD700",
+                    accent15: "rgba(255,215,0,0.12)",
+                    accent25: "rgba(255,215,0,0.20)",
+                    accent30: "rgba(255,215,0,0.25)",
+                    accent40: "rgba(255,215,0,0.35)",
+                    accent50: "rgba(255,215,0,0.45)",
+                    glow: "rgba(255,215,0,0.15)",
+                },
+                mono: {
+                    accent: "#FFFFFF",
+                    accent15: "rgba(255,255,255,0.08)",
+                    accent25: "rgba(255,255,255,0.15)",
+                    accent30: "rgba(255,255,255,0.20)",
+                    accent40: "rgba(255,255,255,0.30)",
+                    accent50: "rgba(255,255,255,0.40)",
+                    glow: "rgba(255,255,255,0.1)",
+                },
+            };
+
+            /* === PRESETS === */
+            const presets = {
+                dresscode: {
+                    header: "Dress|Code",
+                    body: "Obowiązuje strój fetyszowy: latex, skóra, vinyl, bielizna, uprząż. Zakazane: jeansy, t-shirty, odzież codzienna.",
+                    highlight: "latex",
+                    date: "",
+                    cta: "Brak Wyjątków",
+                },
+                event: {
+                    header: "Event|Name",
+                    body: "Opis wydarzenia. Wpisz tutaj szczegóły dotyczące imprezy i jej charakteru.",
+                    highlight: "wydarzenia",
+                    date: "15.01.2025 | 22:00",
+                    cta: "Tickets In Bio",
+                },
+                hiring: {
+                    header: "Hiring",
+                    body: "Szukamy osób do naszego zespołu. Wymagana dyspozycyjność w weekendy i doświadczenie w branży eventowej.",
+                    highlight: "zespołu",
+                    date: "",
+                    cta: "kontakt@fetishchateau.com",
+                },
+                announcement: {
+                    header: "Wazna|Informacja",
+                    body: "Treść ogłoszenia. Wpisz tutaj ważne informacje dla gości.",
+                    highlight: "Ważna",
+                    date: "",
+                    cta: "Więcej Informacji Wkrótce",
+                },
+                clear: {
+                    header: "",
+                    body: "",
+                    highlight: "",
+                    date: "",
+                    cta: "",
+                },
+            };
+
+            /* === DOM ELEMENTS === */
+            const previewPoster = document.getElementById("previewPoster");
+            const previewContainer =
+                document.getElementById("previewContainer");
+            const exportPoster = document.getElementById("exportPoster");
+            const downloadBtn = document.getElementById("downloadBtn");
+
+            /* === BLUR HELPER FOR EXPORT === */
+            function createBlurredBackground(
+                imageSrc,
+                width,
+                height,
+                blurAmount = 8,
+                layout = "left",
+                format = "story",
+            ) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.crossOrigin = "anonymous";
+
+                    img.onload = () => {
+                        // Calculate glass panel dimensions based on layout
+                        let panelWidth, panelHeight, panelX, panelY;
+
+                        if (layout === "left") {
+                            panelWidth = width * 0.75; // 75% width
+                            panelHeight = height;
+                            panelX = 0;
+                            panelY = 0;
+                        } else if (layout === "right") {
+                            panelWidth = width * 0.75; // 75% width
+                            panelHeight = height;
+                            panelX = width * 0.25; // Start from 25% (right side)
+                            panelY = 0;
+                        } else if (layout === "center") {
+                            panelWidth = width * 0.85; // 85% width (88% for feed)
+                            if (format === "feed") {
+                                panelWidth = width * 0.88;
+                            }
+                            panelHeight = height * 0.6; // min-height 60% (70% for feed)
+                            if (format === "feed") {
+                                panelHeight = height * 0.7;
+                            }
+                            panelX = (width - panelWidth) / 2;
+                            panelY = (height - panelHeight) / 2;
+                        } else if (layout === "split") {
+                            if (format === "feed") {
+                                panelWidth = width; // 100% width
+                                panelHeight = height; // min-height 50%
+                                panelX = 0;
+                                panelY = 0; // bottom aligned
+                            } else {
+                                panelWidth = width; // 100% width
+                                panelHeight = height * 0.5; // min-height 50%
+                                panelX = 0;
+                                panelY = height - panelHeight; // bottom aligned
+                            }
+                        } else {
+                            // Default/none - use full canvas
+                            panelWidth = width;
+                            panelHeight = height;
+                            panelX = 0;
+                            panelY = 0;
+                        }
+
+                        // Create canvas matching panel size
+                        const canvas = document.createElement("canvas");
+                        canvas.width = panelWidth;
+                        canvas.height = panelHeight;
+                        const ctx = canvas.getContext("2d");
+
+                        // Apply blur filter
+                        ctx.filter = `blur(${blurAmount}px)`;
+
+                        // Scale image to cover the entire poster
+                        const scale =
+                            Math.max(width / img.width, height / img.height) *
+                            1.1;
+                        const scaledWidth = img.width * scale;
+                        const scaledHeight = img.height * scale;
+
+                        // Center the scaled image on the full poster
+                        const imgOffsetX = (width - scaledWidth) / 2;
+                        const imgOffsetY = (height - scaledHeight) / 2;
+
+                        // Calculate the position to draw the image so that the panel area shows the correct portion
+                        // We need to shift the image on our canvas by the negative of the panel position
+                        const drawX = imgOffsetX - panelX;
+                        const drawY = imgOffsetY - panelY;
+
+                        // Draw the full scaled image, positioned so the panel area is visible
+                        ctx.drawImage(
+                            img,
+                            drawX,
+                            drawY, // Position on canvas
+                            scaledWidth,
+                            scaledHeight, // Size
+                        );
+
+                        resolve(canvas.toDataURL("image/png"));
+                    };
+
+                    img.onerror = () => {
+                        // If blur fails, return original image
+                        resolve(imageSrc);
+                    };
+
+                    img.src = imageSrc;
+                });
+            }
+
+            /* === RENDER POSTER === */
+            function renderPoster(container, isExport = false) {
+                const c = colors[state.color];
+                const scale = isExport
+                    ? ""
+                    : state.format === "story"
+                      ? "transform: scale(0.35); transform-origin: top left;"
+                      : "transform: scale(0.5); transform-origin: top left;";
+
+                const headerText = state.header
+                    .split("|")
+                    .map((line) => line.trim())
+                    .join("<br>");
+
+                // Highlight word in body
+                let bodyHtml = state.body
+                    .split("|")
+                    .map((line) => line.trim())
+                    .join("<br>");
+
+                if (state.highlight && state.highlight.trim()) {
+                    const regex = new RegExp(`(${state.highlight})`, "gi");
+                    bodyHtml = bodyHtml.replace(
+                        regex,
+                        `<span class="highlight">$1</span>`,
+                    );
+                }
+
+                /* Determine glow position based on layout */
+                let glowClass =
+                    state.layout === "left"
+                        ? "right"
+                        : state.layout === "right"
+                          ? "left"
+                          : "center";
+
+                /* Accent line position */
+                let accentLineHtml = "";
+                if (state.layout !== "center") {
+                    accentLineHtml = `<div class="accent-line ${state.layout}"></div>`;
+                }
+
+                const html = `
+        <div class="poster ${state.format}" style="
+          --accent-color: ${c.accent};
+          --accent-15: ${c.accent15};
+          --accent-25: ${c.accent25};
+          --accent-30: ${c.accent30};
+          --accent-40: ${c.accent40};
+          --accent-50: ${c.accent50};
+          --glow-color: ${c.glow};
+          --blur-amount: ${state.blur}px;
+          --panel-border-width: ${state.blur === 0 ? "0" : "2px"};
+          --font-scale: ${state.fontScale};
+          --font-header: ${state.fontHeader};
+          --font-body: ${state.fontBody};
+          --font-misc: ${state.fontMisc};
+          ${scale}
+        ">
+          <div class="poster-bg" style="background-image: url('${state.image}')"></div>
+          <div class="ambient-glow ${glowClass}"></div>
+          <div class="glass-panel ${state.layout}">
+            <div class="glass-panel-bg"></div>
+            <div class="glass-panel-content">
+              ${accentLineHtml}
+              ${state.logo != "none" ? `<div class="poster-logo"><img src="${state.logo}" alt="Logo" /></div>` : ""}
+              ${state.header ? `<div class="poster-header">${headerText}</div>` : ""}
+              <div class="poster-divider"></div>
+              ${state.body ? `<div class="poster-body">${bodyHtml}</div>` : ""}
+              ${state.date ? `<div class="poster-date">${state.date}</div>` : ""}
+              ${state.date || state.cta ? '<div class="footer-divider"></div>' : ""}
+              ${state.cta ? `<div class="poster-cta">${state.cta}</div>` : ""}
+            </div>
+          </div>
+        </div>
+      `;
+
+                container.innerHTML = html;
+            }
+
+            // === UPDATE PREVIEW ===
+            function updatePreview() {
+                // Update container size
+                previewContainer.className = `preview-container ${state.format === "story" ? "story-size" : "feed-size"}`;
+                renderPoster(previewContainer);
+            }
+
+            // === EVENT LISTENERS ===
+
+            // Format toggle
+            document.querySelectorAll("[data-format]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    document
+                        .querySelectorAll("[data-format]")
+                        .forEach((b) => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    state.format = btn.dataset.format;
+                    updatePreview();
+                });
+            });
+
+            // Layout toggle
+            document.querySelectorAll("[data-layout]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    document
+                        .querySelectorAll("[data-layout]")
+                        .forEach((b) => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    state.layout = btn.dataset.layout;
+                    updatePreview();
+                });
+            });
+
+            // Color toggle
+            document.querySelectorAll("[data-color]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    document
+                        .querySelectorAll("[data-color]")
+                        .forEach((b) => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    state.color = btn.dataset.color;
+                    updatePreview();
+                });
+            });
+
+            // Blur toggle
+            document.querySelectorAll("[data-blur]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    document
+                        .querySelectorAll("[data-blur]")
+                        .forEach((b) => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    state.blur = parseInt(btn.dataset.blur);
+                    updatePreview();
+                });
+            });
+
+            // === BACKGROUND GALLERY RENDERING ===
+            let currentBgCategory = "abstract";
+            const bgGalleryContainer =
+                document.getElementById("bgGalleryContainer");
+
+            function renderBgGallery(category) {
+                const images = backgroundImages[category] || [];
+                const galleryHtml = `
+                    <div class="image-gallery">
+                        ${images
+                            .map(
+                                (img, index) => `
+                            <div
+                                class="image-thumb ${img === state.image ? "active" : ""}"
+                                data-image="${img}"
+                                style="background-image: url('${img}');"
+                            ></div>
+                        `,
+                            )
+                            .join("")}
+                    </div>
+                `;
+                bgGalleryContainer.innerHTML = galleryHtml;
+
+                // Attach click events to new thumbs
+                bgGalleryContainer
+                    .querySelectorAll(".image-thumb")
+                    .forEach((thumb) => {
+                        thumb.addEventListener("click", () => {
+                            document
+                                .querySelectorAll(".image-thumb")
+                                .forEach((t) => t.classList.remove("active"));
+                            thumb.classList.add("active");
+                            state.image = thumb.dataset.image;
+                            updatePreview();
+                        });
+                    });
+            }
+
+            // Background subcategory switching
+            document.querySelectorAll("[data-bg-category]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    // Update active tab
+                    document
+                        .querySelectorAll("[data-bg-category]")
+                        .forEach((b) => b.classList.remove("active"));
+                    btn.classList.add("active");
+
+                    // Render gallery for selected category
+                    currentBgCategory = btn.dataset.bgCategory;
+                    renderBgGallery(currentBgCategory);
+                });
+            });
+
+            // Initial gallery render
+            renderBgGallery(currentBgCategory);
+
+            // Image upload
+            document
+                .getElementById("imageUpload")
+                .addEventListener("change", (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            state.image = event.target.result;
+                            document
+                                .querySelectorAll(".image-thumb")
+                                .forEach((t) => t.classList.remove("active"));
+                            updatePreview();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+            // Presets
+            document.querySelectorAll("[data-preset]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const preset = presets[btn.dataset.preset];
+                    if (preset) {
+                        Object.keys(preset).forEach((key) => {
+                            state[key] = preset[key];
+                            const input = document.getElementById(key);
+                            if (input) input.value = preset[key];
+                        });
+                        updatePreview();
+                    }
+                });
+            });
+
+            // Text inputs
+            ["header", "body", "highlight", "date", "cta"].forEach((id) => {
+                const input = document.getElementById(id);
+                input.addEventListener("input", () => {
+                    state[id] = input.value;
+                    updatePreview();
+                });
+            });
+
+            // Logo selection
+            document.querySelectorAll(".logo-thumb").forEach((thumb) => {
+                thumb.addEventListener("click", () => {
+                    document
+                        .querySelectorAll(".logo-thumb")
+                        .forEach((t) => t.classList.remove("active"));
+                    thumb.classList.add("active");
+                    state.logo = thumb.dataset.logo;
+                    updatePreview();
+                });
+            });
+
+            // Font scale controls
+            const fontScaleInput = document.getElementById("fontScale");
+            const fontScaleDown = document.getElementById("fontScaleDown");
+            const fontScaleUp = document.getElementById("fontScaleUp");
+
+            fontScaleInput.addEventListener("input", () => {
+                state.fontScale = parseInt(fontScaleInput.value) || 0;
+                updatePreview();
+            });
+
+            fontScaleDown.addEventListener("click", () => {
+                state.fontScale = Math.max(-50, state.fontScale - 1);
+                fontScaleInput.value = state.fontScale;
+                updatePreview();
+            });
+
+            fontScaleUp.addEventListener("click", () => {
+                state.fontScale = Math.min(50, state.fontScale + 1);
+                fontScaleInput.value = state.fontScale;
+                updatePreview();
+            });
+
+            // Font selectors
+            const fontHeaderSelect = document.getElementById("fontHeader");
+            const fontBodySelect = document.getElementById("fontBody");
+            const fontMiscSelect = document.getElementById("fontMisc");
+
+            // Populate font selects
+            fontOptions.header.forEach((font) => {
+                const option = document.createElement("option");
+                option.value = font.value;
+                option.textContent = font.name;
+                option.style.fontFamily = font.value;
+                if (font.value === state.fontHeader) option.selected = true;
+                fontHeaderSelect.appendChild(option);
+            });
+
+            // Add custom font option for header
+            const customHeaderOption = document.createElement("option");
+            customHeaderOption.value = "custom";
+            customHeaderOption.textContent = "Wgraj własny z Google Fonts...";
+            fontHeaderSelect.appendChild(customHeaderOption);
+
+            fontOptions.body.forEach((font) => {
+                const option = document.createElement("option");
+                option.value = font.value;
+                option.textContent = font.name;
+                option.style.fontFamily = font.value;
+                if (font.value === state.fontBody) option.selected = true;
+                fontBodySelect.appendChild(option);
+            });
+
+            // Add custom font option for body
+            const customBodyOption = document.createElement("option");
+            customBodyOption.value = "custom";
+            customBodyOption.textContent = "Wgraj własny z Google Fonts...";
+            fontBodySelect.appendChild(customBodyOption);
+
+            fontOptions.misc.forEach((font) => {
+                const option = document.createElement("option");
+                option.value = font.value;
+                option.textContent = font.name;
+                option.style.fontFamily = font.value;
+                if (font.value === state.fontMisc) option.selected = true;
+                fontMiscSelect.appendChild(option);
+            });
+
+            // Add custom font option for misc
+            const customMiscOption = document.createElement("option");
+            customMiscOption.value = "custom";
+            customMiscOption.textContent = "Wgraj własny z Google Fonts...";
+            fontMiscSelect.appendChild(customMiscOption);
+
+            fontHeaderSelect.addEventListener("change", () => {
+                if (fontHeaderSelect.value === "custom") {
+                    const customFont = prompt(
+                        "Wprowadź nazwę czcionki z Google Fonts (np. 'Playfair Display'):",
+                    );
+                    if (customFont && customFont.trim()) {
+                        const fontFamily = `'${customFont.trim()}', sans-serif`;
+                        loadGoogleFont(customFont.trim());
+                        state.fontHeader = fontFamily;
+
+                        // Add to options if not already there
+                        const existingOption = Array.from(
+                            fontHeaderSelect.options,
+                        ).find((opt) => opt.value === fontFamily);
+                        if (!existingOption) {
+                            const newOption = document.createElement("option");
+                            newOption.value = fontFamily;
+                            newOption.textContent = customFont.trim();
+                            newOption.style.fontFamily = fontFamily;
+                            fontHeaderSelect.insertBefore(
+                                newOption,
+                                fontHeaderSelect.lastChild,
+                            );
+                        }
+                        fontHeaderSelect.value = fontFamily;
+                        updatePreview();
+                    } else {
+                        // Reset to previous selection
+                        fontHeaderSelect.value = state.fontHeader;
+                    }
+                } else {
+                    const fontName =
+                        fontHeaderSelect.options[fontHeaderSelect.selectedIndex]
+                            .textContent;
+                    loadGoogleFont(fontName);
+                    state.fontHeader = fontHeaderSelect.value;
+                    updatePreview();
+                }
+            });
+
+            fontBodySelect.addEventListener("change", () => {
+                if (fontBodySelect.value === "custom") {
+                    const customFont = prompt(
+                        "Wprowadź nazwę czcionki z Google Fonts (np. 'Playfair Display'):",
+                    );
+                    if (customFont && customFont.trim()) {
+                        const fontFamily = `'${customFont.trim()}', sans-serif`;
+                        loadGoogleFont(customFont.trim());
+                        state.fontBody = fontFamily;
+
+                        // Add to options if not already there
+                        const existingOption = Array.from(
+                            fontBodySelect.options,
+                        ).find((opt) => opt.value === fontFamily);
+                        if (!existingOption) {
+                            const newOption = document.createElement("option");
+                            newOption.value = fontFamily;
+                            newOption.textContent = customFont.trim();
+                            newOption.style.fontFamily = fontFamily;
+                            fontBodySelect.insertBefore(
+                                newOption,
+                                fontBodySelect.lastChild,
+                            );
+                        }
+                        fontBodySelect.value = fontFamily;
+                        updatePreview();
+                    } else {
+                        // Reset to previous selection
+                        fontBodySelect.value = state.fontBody;
+                    }
+                } else {
+                    const fontName =
+                        fontBodySelect.options[fontBodySelect.selectedIndex]
+                            .textContent;
+                    loadGoogleFont(fontName);
+                    state.fontBody = fontBodySelect.value;
+                    updatePreview();
+                }
+            });
+
+            fontMiscSelect.addEventListener("change", () => {
+                if (fontMiscSelect.value === "custom") {
+                    const customFont = prompt(
+                        "Wprowadź nazwę czcionki z Google Fonts (np. 'Playfair Display'):",
+                    );
+                    if (customFont && customFont.trim()) {
+                        const fontFamily = `'${customFont.trim()}', sans-serif`;
+                        loadGoogleFont(customFont.trim());
+                        state.fontMisc = fontFamily;
+
+                        // Add to options if not already there
+                        const existingOption = Array.from(
+                            fontMiscSelect.options,
+                        ).find((opt) => opt.value === fontFamily);
+                        if (!existingOption) {
+                            const newOption = document.createElement("option");
+                            newOption.value = fontFamily;
+                            newOption.textContent = customFont.trim();
+                            newOption.style.fontFamily = fontFamily;
+                            fontMiscSelect.insertBefore(
+                                newOption,
+                                fontMiscSelect.lastChild,
+                            );
+                        }
+                        fontMiscSelect.value = fontFamily;
+                        updatePreview();
+                    } else {
+                        // Reset to previous selection
+                        fontMiscSelect.value = state.fontMisc;
+                    }
+                } else {
+                    const fontName =
+                        fontMiscSelect.options[fontMiscSelect.selectedIndex]
+                            .textContent;
+                    loadGoogleFont(fontName);
+                    state.fontMisc = fontMiscSelect.value;
+                    updatePreview();
+                }
+            });
+
+            // Download
+            downloadBtn.addEventListener("click", async () => {
+                downloadBtn.classList.add("loading");
+                downloadBtn.textContent = "Generowanie...";
+                renderPoster(exportPoster, true);
+                const posterEl = exportPoster.querySelector(".poster");
+
+                await new Promise((resolve) => setTimeout(resolve, 200));
+
+                try {
+                    const width = state.format === "story" ? 1080 : 1080;
+                    const height = state.format === "story" ? 1920 : 1080;
+
+                    // Pre-render blurred background for the glass panel area
+                    const blurredBgDataUrl = await createBlurredBackground(
+                        state.image,
+                        width,
+                        height,
+                        state.blur,
+                        state.layout,
+                        state.format,
+                    );
+
+                    // Wait for images to load
+                    await new Promise((resolve) => setTimeout(resolve, 300));
+
+                    const glassPanelBg =
+                        posterEl.querySelector(".glass-panel-bg");
+
+                    // Apply pre-blurred background to glass panel for export
+                    if (glassPanelBg && state.blur) {
+                        glassPanelBg.style.backgroundImage = `url('${blurredBgDataUrl}')`;
+                        glassPanelBg.style.backgroundSize = "100% 100%";
+                        glassPanelBg.style.backgroundPosition = "0 0";
+                        glassPanelBg.style.backgroundRepeat = "no-repeat";
+
+                        // Remove backdrop-filter for export (we're using pre-blurred image)
+                        glassPanelBg.style.backdropFilter = "none";
+                        glassPanelBg.style.webkitBackdropFilter = "none";
+                    }
+
+                    // Wait a bit for the blurred background to render
+                    await new Promise((resolve) => setTimeout(resolve, 500));
+
+                    const cfgHTMLCANVAS = {
+                        width: width,
+                        height: height,
+                        scale: 1,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: "#000000",
+                    };
+                    const canvas = await html2canvas(posterEl, cfgHTMLCANVAS);
+
+                    // Download
+                    const link = document.createElement("a");
+                    const colorName = state.color.toUpperCase();
+                    const formatName = state.format.toUpperCase();
+                    link.download = `FC_${colorName}_${formatName}_${Date.now()}.png`;
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                } catch (err) {
+                    console.error("Export error:", err, posterEl);
+                    alert("Eksport nie powiodl sie. Sprobuj ponownie.");
+                }
+
+                downloadBtn.classList.remove("loading");
+                downloadBtn.textContent = "Pobierz Posta";
+            });
+
+            // Initial render
+            updatePreview();
+        </script>
+    </body>
+</html>

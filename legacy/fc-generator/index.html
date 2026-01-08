@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fetish Chateau — Visual Identity Engine</title>
+
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    </head>
+    <body>
+        <div class="app">
+            <!-- CONTROLS PANEL -->
+            <div class="controls">
+                <!-- FORMAT -->
+                <div class="section">
+                    <div class="section-title">Format</div>
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" data-format="story">
+                            Story (9:16)
+                        </button>
+                        <button class="toggle-btn" data-format="feed">
+                            Feed (1:1)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- LAYOUT -->
+                <div class="section">
+                    <div class="section-title">Uklad</div>
+                    <div class="toggle-group layout-toggle-group">
+                        <button class="toggle-btn active" data-layout="left">
+                            ←
+                        </button>
+                        <button class="toggle-btn" data-layout="right">
+                            →
+                        </button>
+                        <button class="toggle-btn" data-layout="center">
+                            +
+                        </button>
+                        <button class="toggle-btn" data-layout="split">
+                            ↓
+                        </button>
+                        <button class="toggle-btn" data-layout="splitTop">
+                            ↑
+                        </button>
+                        <button class="toggle-btn" data-layout="none">×</button>
+                    </div>
+                </div>
+
+                <!-- BLUR -->
+                <div class="section">
+                    <div class="section-title">Rozmycie</div>
+                    <div class="toggle-group">
+                        <button class="toggle-btn" data-blur="0">-</button>
+                        <button class="toggle-btn" data-blur="16">16</button>
+                        <button class="toggle-btn active" data-blur="32">
+                            32
+                        </button>
+                        <button class="toggle-btn" data-blur="64">64</button>
+                    </div>
+                </div>
+
+                <!-- COLOR -->
+                <div class="section">
+                    <div class="section-title">Stylizacija</div>
+                    <div class="color-options">
+                        <button
+                            class="color-btn crimson active"
+                            data-color="crimson"
+                            title="Karmazyn"
+                        ></button>
+                        <button
+                            class="color-btn magenta"
+                            data-color="magenta"
+                            title="Magenta"
+                        ></button>
+                        <button
+                            class="color-btn blue"
+                            data-color="blue"
+                            title="Niebieski"
+                        ></button>
+                        <button
+                            class="color-btn gold"
+                            data-color="gold"
+                            title="Zloty"
+                        ></button>
+                        <button
+                            class="color-btn mono"
+                            data-color="mono"
+                            title="Mono"
+                        ></button>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="logo-gallery">
+                        <div
+                            class="logo-thumb"
+                            data-logo="none"
+                            style="
+                                flex: auto;
+                                display: flex;
+                                color: #797979;
+                                align-items: center;
+                                justify-content: center;
+                                text-align: center;
+                                font-size: 11px;
+                            "
+                        >
+                            No Logo
+                        </div>
+                        <div
+                            class="logo-thumb"
+                            data-logo="fclogo/1.png"
+                            style="
+                                background-image: url(&quot;fclogo/1.png&quot;);
+                            "
+                        ></div>
+                        <div
+                            class="logo-thumb"
+                            data-logo="fclogo/2.png"
+                            style="
+                                background-image: url(&quot;fclogo/2.png&quot;);
+                            "
+                        ></div>
+                        <div
+                            class="logo-thumb active"
+                            data-logo="fclogo/3.png"
+                            style="
+                                background-image: url(&quot;fclogo/3.png&quot;);
+                            "
+                        ></div>
+                        <div
+                            class="logo-thumb"
+                            data-logo="fclogo/4.png"
+                            style="
+                                background-image: url(&quot;fclogo/4.png&quot;);
+                            "
+                        ></div>
+                    </div>
+                </div>
+
+                <!-- BACKGROUND -->
+                <div class="section">
+                    <!-- Subcategory Tabs -->
+                    <div class="bg-subcategories">
+                        <button
+                            class="bg-subcategory-btn active"
+                            data-bg-category="abstract"
+                        >
+                            Abstrakcja
+                        </button>
+                        <button
+                            class="bg-subcategory-btn"
+                            data-bg-category="figure"
+                        >
+                            Postac
+                        </button>
+                        <button
+                            class="bg-subcategory-btn"
+                            data-bg-category="material"
+                        >
+                            Material
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Gallery Container -->
+                    <div id="bgGalleryContainer"></div>
+
+                    <!-- Upload Button -->
+                    <div style="margin-top: 12px">
+                        <label
+                            class="upload-btn"
+                            style="
+                                aspect-ratio: auto;
+                                padding: 12px;
+                                flex-direction: row;
+                                gap: 8px;
+                            "
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                style="width: 20px; height: 20px; margin: 0"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 4v16m8-8H4"
+                                />
+                            </svg>
+                            Wgraj Wlasne
+                            <input
+                                type="file"
+                                id="imageUpload"
+                                accept="image/*"
+                            />
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PREVIEW AREA -->
+            <div class="preview-area">
+                <div class="preview-label">Podglad</div>
+                <div class="preview-container story-size" id="previewContainer">
+                    <div class="poster story" id="previewPoster">
+                        <!-- Content generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="controls-right">
+                <!-- TEXT INPUTS -->
+                <div class="section">
+                    <!-- PRESETS -->
+                    <div class="section">
+                        <div class="section-title">Szablony</div>
+                        <div class="preset-buttons">
+                            <button class="preset-btn" data-preset="dresscode">
+                                Dress Code
+                            </button>
+                            <button class="preset-btn" data-preset="event">
+                                Wydarzenie
+                            </button>
+                            <button class="preset-btn" data-preset="hiring">
+                                Rekrutacja
+                            </button>
+                            <button
+                                class="preset-btn"
+                                data-preset="announcement"
+                            >
+                                Ogloszenie
+                            </button>
+                            <button class="preset-btn" data-preset="clear">
+                                Wyczysc
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label"
+                            >Naglowek (uzyj | dla nowej linii)</label
+                        >
+                        <input
+                            type="text"
+                            class="input-field"
+                            id="header"
+                            placeholder="TYTUL"
+                            value="Dress|Code"
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label"
+                            >Tekst (uzyj | dla nowej linii)</label
+                        >
+                        <textarea
+                            class="input-field"
+                            id="body"
+                            placeholder="Tresc wiadomosci..."
+                        >
+Obowiązuje strój fetyszowy: latex, skóra, vinyl, bielizna, uprząż. Zakazane: jeansy, t-shirty, odzież codzienna.</textarea
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label"
+                            >Wyroznienie (kolorowe)</label
+                        >
+                        <input
+                            type="text"
+                            class="input-field"
+                            id="highlight"
+                            placeholder="slowo"
+                            value="latex"
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Data / Godzina</label>
+                        <input
+                            type="text"
+                            class="input-field"
+                            id="date"
+                            placeholder="15.01.2025 | 22:00"
+                            value=""
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label"
+                            >CTA (Wezwanie do dzialania)</label
+                        >
+                        <input
+                            type="text"
+                            class="input-field"
+                            id="cta"
+                            placeholder="LINK W BIO"
+                            value="Brak Wyjatkow"
+                        />
+                    </div>
+
+                    <hr />
+                    <br />
+
+                    <div class="input-group mid-control">
+                        <section>
+                            <label class="input-label">Czcionka naglowka</label>
+                            <select
+                                class="input-field"
+                                id="fontHeader"
+                            ></select>
+                        </section>
+                        <section>
+                            <label class="input-label"
+                                >Skala czcionki naglowka</label
+                            >
+                            <div class="font-scale-control">
+                                <button
+                                    class="scale-btn"
+                                    data-scale-target="header"
+                                >
+                                    -
+                                </button>
+                                <input
+                                    type="number"
+                                    class="input-field scale-input"
+                                    id="fontScaleHeader"
+                                    value="0"
+                                    min="-50"
+                                    max="50"
+                                />
+                                <button
+                                    class="scale-btn"
+                                    data-scale-target="header"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="input-group mid-control">
+                        <section>
+                            <label class="input-label">Czcionka tresci</label>
+                            <select class="input-field" id="fontBody"></select>
+                        </section>
+                        <section>
+                            <label class="input-label" style="margin-top: 0px"
+                                >Skala czcionki tresci</label
+                            >
+                            <div class="font-scale-control">
+                                <button
+                                    class="scale-btn"
+                                    data-scale-target="body"
+                                >
+                                    -
+                                </button>
+                                <input
+                                    type="number"
+                                    class="input-field scale-input"
+                                    id="fontScaleBody"
+                                    value="0"
+                                    min="-50"
+                                    max="50"
+                                />
+                                <button
+                                    class="scale-btn"
+                                    data-scale-target="body"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="input-group mid-control">
+                        <section>
+                            <label class="input-label">Czcionka podpisu</label>
+                            <select class="input-field" id="fontMisc"></select>
+                        </section>
+                        <section>
+                            <label class="input-label" style="margin-top: 0px"
+                                >Skala czcionki podpisu</label
+                            >
+                            <div class="font-scale-control">
+                                <button
+                                    class="scale-btn"
+                                    data-scale-target="misc"
+                                >
+                                    -
+                                </button>
+                                <input
+                                    type="number"
+                                    class="input-field scale-input"
+                                    id="fontScaleMisc"
+                                    value="0"
+                                    min="-50"
+                                    max="50"
+                                />
+                                <button
+                                    class="scale-btn"
+                                    data-scale-target="misc"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- DOWNLOAD -->
+                <button class="download-btn" id="downloadBtn">
+                    Pobierz Posta
+                </button>
+            </div>
+        </div>
+
+        <!-- Hidden full-size poster for export -->
+        <div id="exportPoster"></div>
+
+        <script type="module" src="/main.js"></script>
+    </body>
+</html>

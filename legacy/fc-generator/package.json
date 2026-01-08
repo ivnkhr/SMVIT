@@ -1,0 +1,25 @@
+{
+  "name": "fc-generator",
+  "version": "1.0.0",
+  "description": "Instagram post generator for Fetish Chateau",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "instagram",
+    "generator",
+    "post",
+    "fetish-chateau"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^7.3.0"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1"
+  }
+}
