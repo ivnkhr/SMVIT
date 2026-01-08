@@ -77,6 +77,7 @@ A full rewrite of the Fetish Chateau post generator into an Angular 20 + NgRx Sa
 ## Architecture
 - **Frontend**: Angular 20
 - **State Management**: NgRx
+- **Rendering**: HTML5 Canvas (native WYSIWYG - no html2canvas)
 - **Build**: Angular CLI / Vite
 
 ## Key Features
@@ -103,6 +104,14 @@ A full rewrite of the Fetish Chateau post generator into an Angular 20 + NgRx Sa
 - Dynamic component loading
 - Theme system for branding
 
+### Canvas Rendering Engine
+- Native HTML5 Canvas for all visual rendering (no html2canvas)
+- Real-time preview that matches final output exactly
+- Direct pixel manipulation for advanced effects
+- High-performance text rendering with custom fonts
+- Support for gradient backgrounds, overlays, and blend modes
+- Export via native Canvas API (`toDataURL`, `toBlob`)
+
 ## Legacy System Reference
 The original static HTML implementation (Vanilla JS + html2canvas) is preserved in `legacy/fc-generator/`. Key aspects to migrate:
 
@@ -115,6 +124,15 @@ The original static HTML implementation (Vanilla JS + html2canvas) is preserved 
 - Custom image upload (base64)
 - Quick preset templates
 - Text inputs with live update
+
+### Rendering Approach Change
+**Important**: Instead of porting html2canvas (which has multiple export issues and rendering inconsistencies), we will rebuild the core functionality using native HTML5 Canvas from the beginning. This ensures:
+- True WYSIWYG (What You See Is What You Get) - the preview IS the final output
+- No rendering discrepancies between preview and export
+- Better performance with real-time canvas updates
+- Simpler export via `canvas.toDataURL()` or `canvas.toBlob()`
+- Complete control over all rendering aspects (text, images, effects)
+- Native Canvas API support for advanced graphics operations
 
 ### Original State Structure
 ```typescript
@@ -147,11 +165,12 @@ interface PostState {
 - [ ] Migrate core state management
 
 ### Phase 2 - Feature Parity
-- [ ] Implement image upload and handling
-- [ ] Port html2canvas export functionality
-- [ ] Migrate all color palettes
-- [ ] Implement all layout options
-- [ ] Port template presets
+- [ ] Implement image upload and handling for Canvas
+- [ ] Build Canvas rendering engine for text, images, layouts
+- [ ] Implement Canvas-based export (toDataURL/toBlob)
+- [ ] Migrate all color palettes to Canvas styles
+- [ ] Implement all layout options in Canvas
+- [ ] Port template presets to Canvas format
 
 ### Phase 3 - Advanced Features
 - [ ] Implement undo/redo system
@@ -174,6 +193,8 @@ interface PostState {
 - Support Polish language text (UTF-8)
 - Must work client-side without backend
 - Reference `llms/` folder for Angular documentation and context (contains compact.txt and full.txt with comprehensive Angular guides)
+- Native Canvas rendering ensures WYSIWYG - preview is the actual final output
+- All visual elements (text, images, effects) rendered directly to Canvas API
 
 ## File Structure (Planned)
 ```
