@@ -1,0 +1,77 @@
+@use '@angular/material' as mat;
+
+/* === RESET & BASE === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$red-palette,
+        tertiary: mat.$red-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  color-scheme: dark;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background: #0a0a0a;
+  color: #ffffff;
+  min-height: 100vh;
+  margin: 0;
+  height: 100%;
+}
+
+/* === SCROLLBAR STYLING === */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+
+  &:hover {
+    background: #444;
+  }
+}
+
+/* === GLOBAL TYPOGRAPHY === */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* === FOCUS STYLES FOR ACCESSIBILITY === */
+:focus-visible {
+  outline: 2px solid #dc143c;
+  outline-offset: 2px;
+}
+
+/* === SELECTION STYLING === */
+::selection {
+  background: rgba(220, 20, 60, 0.3);
+  color: #fff;
+}

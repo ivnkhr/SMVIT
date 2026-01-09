@@ -1,0 +1,50 @@
+<div
+  class="poster"
+  [class.story]="post().format === 'story'"
+  [class.feed]="post().format === 'feed'"
+  [attr.style]="posterStyles()">
+
+  <div class="poster-bg" [style.background-image]="'url(' + post().image + ')'"></div>
+
+  <div class="ambient-glow" [class]="glowPosition()"></div>
+
+  @if (post().layout !== 'none') {
+    <div class="glass-panel" [class]="post().layout">
+      <div class="glass-panel-bg"></div>
+      <div class="glass-panel-content">
+
+        @if (showAccentLine()) {
+          <div class="accent-line" [class]="post().layout"></div>
+        }
+
+        @if (post().logo !== 'none') {
+          <div class="poster-logo">
+            <img [src]="post().logo" alt="Logo" />
+          </div>
+        }
+
+        @if (post().header) {
+          <div class="poster-header" [innerHTML]="processedHeader() | safeHtml"></div>
+        }
+
+        <div class="poster-divider"></div>
+
+        @if (post().body) {
+          <div class="poster-body" [innerHTML]="processedBody() | safeHtml"></div>
+        }
+
+        @if (post().date) {
+          <div class="poster-date">{{ post().date }}</div>
+        }
+
+        @if (post().date || post().cta) {
+          <div class="footer-divider"></div>
+        }
+
+        @if (post().cta) {
+          <div class="poster-cta">{{ post().cta }}</div>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,320 @@
+/* === POSTER STYLES === */
+.poster {
+  position: relative;
+  overflow: hidden;
+  background: #0a0a0a;
+
+  &.story {
+    width: 1080px;
+    height: 1920px;
+  }
+
+  &.feed {
+    width: 1080px;
+    height: 1080px;
+  }
+}
+
+/* Background */
+.poster-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Ambient Glow */
+.ambient-glow {
+  position: absolute;
+  width: 400px;
+  height: 100%;
+  pointer-events: none;
+
+  &.left {
+    top: 0;
+    left: 0;
+  }
+
+  &.right {
+    top: 0;
+    right: 0;
+  }
+
+  &.center {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+}
+
+/* Glass Panel - Container */
+.glass-panel {
+  position: absolute;
+
+  &.left {
+    top: 0;
+    left: 0;
+    width: 75%;
+    height: 100%;
+  }
+
+  &.right {
+    top: 0;
+    right: -2px;
+    width: 75%;
+    height: 100%;
+  }
+
+  &.center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    min-height: 60%;
+  }
+
+  &.split {
+    width: 100%;
+    min-height: 50%;
+    bottom: 0;
+  }
+
+  &.splitTop {
+    width: 100%;
+    min-height: 50%;
+    top: 0;
+  }
+
+  &.none {
+    display: none;
+  }
+}
+
+.poster.feed .glass-panel {
+  &.center {
+    width: 88%;
+    min-height: 70%;
+  }
+
+  &.split,
+  &.splitTop {
+    min-height: 100%;
+  }
+}
+
+/* Glass Panel - Background Layer (transparency + blur) */
+.glass-panel-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(var(--blur-amount, 8px));
+  -webkit-backdrop-filter: blur(var(--blur-amount, 8px));
+}
+
+.glass-panel.left .glass-panel-bg {
+  border-right: var(--panel-border-width, 2px) solid var(--accent-color);
+}
+
+.glass-panel.right .glass-panel-bg {
+  border-left: var(--panel-border-width, 2px) solid var(--accent-color);
+}
+
+.glass-panel.center .glass-panel-bg,
+.glass-panel.split .glass-panel-bg,
+.glass-panel.splitTop .glass-panel-bg {
+  border: var(--panel-border-width, 2px) solid var(--accent-color);
+}
+
+/* Glass Panel - Content Layer (opaque text) */
+.glass-panel-content {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  width: fill-available;
+}
+
+.glass-panel.left .poster-logo,
+.glass-panel.right .poster-logo {
+  margin-left: -12px;
+}
+
+.glass-panel.left .glass-panel-content,
+.glass-panel.right .glass-panel-content {
+  padding: 80px 70px;
+}
+
+.poster.feed .glass-panel.center .poster-logo {
+  transform: scale(0.9);
+}
+
+.poster.story .glass-panel.split .poster-logo {
+  transform: scale(0.9);
+}
+
+.glass-panel.left .glass-panel-content {
+  padding-left: 102px;
+}
+
+.glass-panel.right .glass-panel-content {
+  padding-left: 50px;
+  padding-right: 102px;
+}
+
+.glass-panel.center .glass-panel-content,
+.glass-panel.split .glass-panel-content,
+.glass-panel.splitTop .glass-panel-content {
+  padding: 80px 70px;
+  text-align: center;
+  align-items: center;
+}
+
+.poster.feed .glass-panel.center .glass-panel-content,
+.poster.feed .glass-panel.split .glass-panel-content,
+.poster.feed .glass-panel.splitTop .glass-panel-content {
+  padding: 60px 50px;
+}
+
+/* Accent Line */
+.accent-line {
+  position: absolute;
+  width: 3px;
+  height: calc(100% - 160px);
+  top: 80px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--accent-30) 20%,
+    var(--accent-50) 50%,
+    var(--accent-30) 80%,
+    transparent 100%
+  );
+
+  &.left {
+    left: 50px;
+  }
+
+  &.right {
+    right: 50px;
+  }
+
+  &.split,
+  &.splitTop {
+    display: none;
+  }
+}
+
+.glass-panel-content > * {
+  text-shadow: 0px 0px 128px var(--accent-color);
+  word-break: break-word;
+}
+
+/* Typography */
+.poster-logo {
+  height: 200px;
+  margin-bottom: 20px;
+
+  img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+}
+
+.poster.feed .poster-logo {
+  height: 160px;
+}
+
+.poster-header {
+  font-family: var(--font-header, 'Bebas Neue', sans-serif);
+  font-weight: 400;
+  font-size: calc(160px + var(--font-scale-header, 0) * 3px);
+  line-height: 0.92;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.poster.feed .poster-header {
+  font-size: calc(120px + var(--font-scale-header, 0) * 2px);
+  margin-bottom: 10px;
+}
+
+.poster-divider {
+  width: 80px;
+  height: 3px;
+  margin-bottom: 40px;
+}
+
+.glass-panel.center .poster-divider {
+  width: 120px;
+}
+
+.poster-body {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-weight: 400;
+  font-size: calc(42px + var(--font-scale-body, 0) * 1px);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 70px;
+  max-width: 95%;
+
+  :global(.highlight) {
+    color: var(--accent-color);
+    font-weight: 500;
+  }
+}
+
+.poster.feed .poster-body {
+  font-size: calc(33px + var(--font-scale-body, 0) * 1px);
+  margin-bottom: 60px;
+}
+
+.poster-date {
+  font-family: var(--font-misc, 'Montserrat', sans-serif);
+  font-weight: 600;
+  font-size: calc(32px + var(--font-scale-misc, 0) * 1px);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 16px;
+}
+
+.poster.feed .poster-date {
+  font-size: calc(22px + var(--font-scale-misc, 0) * 1px);
+}
+
+.footer-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(128, 128, 128, 0.2);
+  margin-bottom: 30px;
+}
+
+.glass-panel.center .footer-divider {
+  background: rgba(128, 128, 128, 0.4);
+  width: 80%;
+}
+
+.poster-cta {
+  font-family: var(--font-misc, 'Montserrat', sans-serif);
+  font-weight: 600;
+  font-size: calc(38px + var(--font-scale-misc, 0) * 1px);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+}
+
+.poster.feed .poster-cta {
+  font-size: calc(26px + var(--font-scale-misc, 0) * 1px);
+}
